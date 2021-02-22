@@ -1,0 +1,89 @@
+so far, we have a project with an app, a global project wide??? view--our home page, there is??? a template,
+that template also uses a "master layout" template, in our app, we have two models, two migrations
+we have a model registered with Django's admin and we have a view to see all of the courses we've created
+now, let's go seeing the details of a single course
+now, we have two models: "Course" and "Step" and our administer setup??? to edit both of them nicely
+so, let's see about adding a view for looking at a single course as as student
+
+go to "courses/views.py"
+we have a way to view all of the courses, we get all the course's names
+let's open it up in the page "http://127.0.0.1:8000/courses/", it shows all the course's name and descriptions
+so,we have our admin, our view, our editor, lots of tabs for editing Django sometimes
+it can be nice if we can just click one the "Course name", 
+like "Python Basics" and go see all the steps that are in the course
+normally we call this kind of view when you're drilling into just a single item, a "detail view"
+cuz we're reading the details??? of a particular item, 
+so we have the "views.py" open, let's create this new view, we don't need to import anything, 
+but we need to catch the primary key which is the id field by default, and we didn't define one, 
+cuz Django automatically creates one for us, 
+		def course_detail(request, pk):
+			course = Course.objects.get(pk=pk)
+			return render(request, 'courses/course_detail.html', {'course': course})
+		
+		# as a direct request??? and take a "pk", this tells python that we're going to have two arguments to our view
+		# Django automatically supplies the request, when it call the "view" function
+		# and we'll provide the "pk" through our url
+		# the rest of the view is very straightforward, we need to get the course of the given "pk" then render the template
+		# we didn't define the "pk" attribute, so where it comes from?
+		# Django knows what field is our primary key, which is what "pk" stands for, primary key,by default is the id
+		# so Django is like "Oh, you want the primary key, you want the id, here you go, let's just go to it"
+		# so we'll deal with what happens if the course didn't exist, a little bit later on, 
+		# now we'll just pretend nobody's gonna type in a bad url???, so we need a url for this
+		
+go to "courses/urls.py"
+we need to add a new line in the next "url" that is similar with the upper one
+		urlpatterns = [
+    	url(r'^$', views.course_list),
+    	url(r'(?P<pk>/d+)/$', views.course_detail),
+]
+		
+		# we're gonna catch a "pk"-?P<pk>, /d, + means more than one of those,/$ end the line
+		# then go to "views.course_detail"
+		# ?P<pk>: a name to group, we call this "group pk"
+		# /d: one or more digits, that come in the url, then go to "views.course_detail"
+		# we left off the Chevron???"^", because other "url.py"(learning/urls.py)
+		# it can starts with the "courses", it can starts with the "pk"
+		
+lastly, we need a template, "courses/templates/courses ", we gonna create a new file "course_detail.html"
+inside "courses/templates/courses/course_detail.html"
+we want to extend "layout.html" and then we want to be able to set some stuffs
+
+		{% extends "layout.html %}
+
+		{% block title %}{{ course.title }}{% endblock %}
+		
+		{% block content %}
+		<article>
+			<h2>{{ course.title }}</h2>
+			{{ course.description }}
+			
+			<section>
+				{% for step in course.step_set.all %}
+					<h3>{{ step.title }}</h3>
+					{{ step.description }}
+				{% endfor %}
+			</section>
+		</article>
+		{% endblock %}
+		
+		# {% block title %} is equal to whatever course we're looking at, that course's title
+		# then "block content", we're gonna do any little bit of??? extra HTML, we make an <article> tag
+		# and the <h2> tag with the course title, then "course description"
+		# we should print out the name for each step in our course, 
+		# by looping through a special new attribute called "step_set"---{% for step in course.step_set.all %}
+		# "step_set" is a query set, and we can query against it, so we use "all" function to get all of them
+		# we don't use "all()" with (), inside Django template
+		# inside wo have <h3> and print out sth
+
+then let's see how it renders, we know that "Python Basics" is No.1, 
+so go to "http://127.0.0.1:8000/courses/1/", it shows the content below
+		
+			Python Basics
+			Learn the basics of Python
+			what's the deal with strings?
+			Strings are more than just a bunch of letters. Find out why.
+			
+the course title and description, step title and description
+
+Django's ORM really help this out there with that "step_set" attribute, 
+sometimes though it ends up being a less-than-optimal??? addition to your queries, 

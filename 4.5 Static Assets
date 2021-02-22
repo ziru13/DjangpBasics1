@@ -1,0 +1,61 @@
+we're going to look anther template tag, one that lets us refer to the static media like 
+CSS, Javascript or images in our templates
+to get static assets we have to do a bit of work with our settings and our urls
+so to start using our static assets and our "setting.py" we need to add at the bottom a new attribute/setting
+add "STATICFILES_DIRS" which is a tupple(,) inside the path to locations for Django to find our "Static assets"
+so these things are CSS files, images, javascript, whatever
+os is already imported up at the top,  "base dir" which is our learning site
+
+			STATICFILES_DIRS = (
+				os.path.join(BASE_DIR, "assets"),
+			)
+			
+			# BASE_DIR is the "DIR" our first "learning_site"
+			# join "BASE_DIR" with the word "assets", don't forget the "," at the end
+			# so let's say "hey Django, if I ask you for static stuff, go look in this directory"
+			
+and let's create  the "assets" file and a "css" folder inside it, and a "layout.css" file (视频中已经帮你创建好)
+before we can get to them though, we have to add a little bit more stuff,
+if we were re??? , this is somewhere in the internet, we will be using a server like Apache/engine X
+or in a window server and they would have a rule setup for how to find static stuff
+cuz we don't want to use Python to serve static stuff but now we're just in development,
+we're just messing with this on our own machine, workspaces
+it's cool if Python services are static files, so we have to tell Django how to do that
+
+so let's go to "learning_site/urls.py", at the top we have those imports and add one more
+		from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+		
+		# at the bottom, and "staticfiles_urlpatterns" is a function, we have to call it(with ())
+		urlpatterns += staticfiles_urlpatterns()
+		
+		# what it does is it checks to see if we ran "Debug" which we are in the "settings.py"--DEBUG = True
+		# and if we were id "Debug" mode, it adds a static path, "static/" 
+		# that points to all of our files in our static folders, but now we need to use this
+
+let's go to look at out "layout.html" template, in the <head> area and add a link
+and add one more thing at the top, because "static" is not loaded by default, 
+not every site is going to need static files, so Django doesn't load automatically
+			{% load static from staticfiles %}
+ 			<head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    	</head>
+    	
+    	# href="{% static 'css/layout.css' %}"使用static标签, 
+    	# 也会有人用href="{{ STATIC_URL}}{% static 'css/layout.css' %}"
+    	# it's cool if your static url never changes, but if you´re gonna be???ing your static assets on to sth like S3/cloudfront
+    	# we might change, then you don't always want to have a url that never changes
+    	# so we use the "static" tag, it can actually figure out what these urls are 
+    	
+***!!!! 注意在Django3.0中已经不用上面{% static 'css/layout.css' %}/{% load staticfiles %}/{% load admin_static %}
+***!!!! 更改为{% load static %}
+
+then go to the page to see if there is any CSS,此时页面没有发生改变,但是能看看到有CSS, 但是没有用
+在添加一些内容到<body></body>之间
+		<body>
+        <div class="site-container">
+        {% block content %}{% endblock %}
+        </div>
+    </body>
+    
+    # 再刷新网页,视频中"Welcome!"向右跑了一点,但是我的没有发生改变

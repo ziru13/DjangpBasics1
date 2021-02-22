@@ -1,0 +1,91 @@
+we have courses, but each course should have steps to it, 
+maybe it will be a video, maybe it will be text base steps or images, whatever method you want to teach with
+we´re gonna call it "steps"
+
+since "steps" are a logical part of our courses, we'll keep them in the same app
+so inside "courses/models.py" we're gonna add a new model
+		class Step(models.Model):
+    	title = models.CharField(max_length=255)
+    	description = models.TextField()
+    	order = models.IntegerField(default=0)  
+    	course = models.ForeignKey(Course)
+    	
+    def __str__(self):
+    	return self.title
+    	
+    	# so far the class "Course" and class "Step" are the same thing, just the created app
+    	# but maybe we'll have an "order" field so we can specify what order, different fields??? come in
+    	# then do a "course", will be a ForeignKey and link back to "Course"
+    	# since we're (not???) gonna print these out eventually, we do return self.title
+    	
+    	# the 1st two items should be pretty familiar from the "Course" model, exactly the same
+    	# the last two items are new
+    	# "order" lets us control the order of the steps, a??? we forget to create a step and we have to create it later
+    	# this way we can add a new one and then set??? where it should be in the order
+    	# setting it to 0 so we can set other numbers to control the ordering of steps later
+    	# 0 is a safe default that will order automatically by their id and then we'll handle their ordering later
+    	# the "course" attribute is a ForeignKey, which is a record??? that points to, or a column that points to
+    		a record in another table, can be in the same table but for now??? in some other table
+    		so what we're doing is "Hey,here is this step and maybe it's a step id of 3 and then belongs to course with an
+    		id of one,so it belongs to that course over there and points to that course", this way a single course can have 
+    		multiple steps but each step only has ons course, it's known as the "one to many" relationship or real hanging???
+    		from the step side and "many to one", many steps belong to one course
+    # and the "__str__" method which will print out the tittle of the step
+    # but I'll??? print out the order but I'll let you put that field if you want
+
+now we've made our model, we of course have to create a new migration, you will do this a lot
+you'll make a model then you'll make a migration, then you'll apply the migration
+it might see monotonous(千篇一律的) and time-consuming, but it's good to know exactly what's going on behind the scenes
+====py manage.py makemigrations courses
+====py manage.py migrate courses
+then done,so we've made a model, we can play with the shell if we want to, but it's easier to stick in the admin
+and then go mess with the admin, so run the server again
+====py manage.py runserver 127.0.0.1:8000
+
+then go to the "admin.py" and import "Step", just copy the first one and change "Course" to "Step"
+		admin.site.register(Course)
+		admin.site.register(Step)
+		
+so we've imported it and registered it, then go back to the "http://127.0.0.1:8000/admin/" and check it out
+we can see in the "Courses" panel there are "Courses" and "Steps"
+then let's add a step by clicking the "Add" button on the right
+		Title: what's the deal with strings?
+		Description: Strings are more than just a bunch of letters. Find out why.
+		Order: 0
+		Course: Python Basics (you can choose)
+		
+		# then let's "save" that, it shows up a flash 'the step "What's the deal with strings" was addded successful.'
+		
+add one course is ok, but if we have a lot of courses, this might get a little difficult, that drop down takes
+it can take a while to read through, to find stuffs, probably better way and you know I wouldn't ask that unless it's true
+Django lets us create smaller forms that represent another model inside the admin form for a model, 
+so we can edit and create steps for courses while we're editing or creating a particular course
+we need to create two new classes for this to work though, so let's hove back over to our "editor"
+we have to??? do all of them right here inside the "admin.py",
+so now first we need to make a class for our smaller form, that's known as an in-line
+		class StepInline(admin.StackedInline):
+			model = Step
+		
+		#there are two types of inline: StackedInline, and TabularInline
+		#区别在于使用的模板, 一个横着，一个竖着，选项是一样的。
+		
+that's it, on its own, this doesn't do anything, but this creates the inline
+now, we have to make our "Next thing"
+		class CourseAdmin(admin.ModelAdmin):
+			inlines = [StepInline,]
+		
+		admin.site.register(Course, CourseAdmin)
+		admin.site.register(Step)
+		
+		# this is the admin for handling our courses, this supposed to specify custom special things
+		# when we make the "StepInline" we set the "model = Step", we didn't set a model on "CourseAdmin"
+		# we do that in the "admin.site.register(Course, CourseAdmin)"
+		# we register "Course", and we register with "CourseAdmin"
+		# if we want we can delete "admin.site.register(Step)" but we just leave it for right now
+		
+go back to page "Courses"-"Courses"-"Python Basics'
+we can see  "Change course" section, "STEPS" section with "Step #2" / "Step #3" 
+and if we want more we can just click "Add another Step"
+we can edit and delete and add new steps right here in the admin
+
+there's lot more we can do with inline, 

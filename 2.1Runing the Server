@@ -1,0 +1,25 @@
+安装Django和创建一个项目之后,看看如何设置并运行server(get server up and running)
+
+在terminal中:
+	django-admin startproject learning_site
+	
+	cd learning_site/
+	py manage.py runserver 127.0.0.1:8000
+			(然后回车键,到浏览器打开这个地址,显示成功安装Django)
+			(terminal中显示You have 18 unapplied migration(s).)
+	ctrl + C (结束我们的server, 并运行migrations)
+	py manage.py.migrate
+			(Django自动创建一个数据库db.sqlite3,然后再次运行)
+	py manage.py runserver 127.0.0.1:8000
+			(此时不会受到人户错误信息,网页野不会发生变化)
+			
+			
+
+Django自带一些migrations,指的是一个 将你的数据从一个设计/结果一定到另一个的 方式
+	移动,改变organization的结构/数据库中的数据, 
+	例如你经常会返现你的table中需要一个新的column/处理额外的数据/你想要保存一个你喜欢的名字到一个你已经collected的法定名字
+	你通过migrations添加这个column,将表单从一个设计移到另一个设计中, 可以reverse这个过程,并删除这个column
+	来回的移动,所以叫migrations
+	
+	
+	

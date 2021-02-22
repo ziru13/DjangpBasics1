@@ -1,0 +1,17 @@
+HttpResponse: 是一个类,让我们做http responses, the response是一个非常
+							通常你会由有想要send back的更specifi的回复,因此你可以专门send back到某些领域/redirect等等
+							
+							
+		def hello_world(request):
+    	return HttpResponse('Hello World')  
+    
+    # 一个叫request的参数,你可以随便命名它,但是叫它request是一个很普通的standard,
+    你会这么做,因为这就是它,the request, 这是用户发送到你的服务器的一直到Django那里的东西,
+    我们这个view不需要这个, 我们不对request做任何改变,
+    但是所有的views一定要接受request,因为我们要把它放那里
+    很多时候,你最终都会用到它
+    
+    # 给一个string("Hello World")作为argument,这是response的body
+    
+    在下一步之前,我们要给一个url route
+    

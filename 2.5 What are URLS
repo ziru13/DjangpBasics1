@@ -1,0 +1,34 @@
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+=======================================================
+1. 从这里开始是一个function view, 对应上面的指示.
+from . import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.hello_world),  
+    # 再添加一个RE,import我们的view,以便我们可以进入我们写的view function, ''这里不应该有任何内容
+]
+
+2. 然后刷新网页(前提是在terminal仲已经输入py manage.py runserver 127.0.0.1:8000)
+	 会出现 Hello World
+	 
+3. 下一步可以开始创建我们的app
+======================================================================
+# 视频中跟我们上面得不一样,是1.8版本的
+# from . import views
+
+# urlpatterns = [
+#     url(r'^admin/', admin.site.urls),
+#     url(r'^$', views.hello_world),]  # 再添加一个RE,import我们的view,以便我们可以进入我们写的view function
+# 
+# 	url(pattern, )这个url对象,实际上五个不同的arguments
+# 		1: pattern,是一个RE, r'^$'这里匹配一个空的string

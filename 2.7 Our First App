@@ -1,0 +1,46 @@
+Django has long has this concept of -- pluggable apps
+an app is an self contain of bit of functionality, like a system of comments, or a way of reference's file from google drive
+so, for example we end up building a solid learning library tool where people can easily use and adapt to their own needs, 
+we might release it as an app, for other Djangos are not ??? store into their projects and use
+and that brings the other word--pluggable, 
+or Django apps that can be moved from project for project usually by ???? them ????, 
+since these apps can be plugged into your project, wo called it pluggable
+
+so a single project is made of a, usually multiply apps, this is a good thing, 
+because you don't have to build a large part of your project
+
+so to create a app, we need to use the urls.py again, 
+we are gonna use the "start app" command and name with the app we want to create
+app names are usually ??? form if the main model ??? your app is going to about
+you need to have a bit more thought ??? in your work before you just jump in
+but it's really a good idea to plan things out a little bit
+you can rename things later if you change your mind
+
+so our main model is going to be for our course???, so name the app "courses"
+so kill the server here (ctrl+C),then "py manage.py startapp courses", again no feedback, that's fine
+then run our server again "py manage.py runserver 127.0.0.1:8000"
+in the file tree, we can see the "courses" directory, it´s the same level as the "learning_site" directory
+all our apps need to overlap next to each other, if we have more apps, right now we just have one
+(但是我自己创建的courses目录里面,在migrations目录中的,而且多了一个app.py)
+"migrations" directory now is empty, only has the standard and __init__.py
+??? it the __init__.py files by the way you don't already know, ??? directory has been a python module, 
+they will let us do imports and things like that with files that inside the directories
+most of the time, they are 100% one, we wiil explore all these files in the rest of the course
+for now, just let us get the app imported into the out project
+
+we do that by opening our "setting.py"
+if you have say something about our "setting.py" file, this is what we are talking about, the file has lots of stuffs in it
+and we don't need to worry about most of it, but half way down though,
+ 
+there is a tuple---"INSTALLED_APPS", there is a thing we need to add it
+		'courses',   # and we add the comma, it's a good chance to add more apps later
+								 # even if you don't, it's still a good idea to add that comma
+								 
+one more things we want to change is "TIME_ZONE", they are a specific set of??? time zones
+they are a fairly standard set, but you can just put in like "PST" for "pacific standard time"
+now we change it to WEST code---
+		TIME_ZONE = 'America/Los_Angeles'
+		
+if you want to change the timezone, go for it, change to whatever your local time zone is, 
+and this way for using DATA or TIMES in our project,they will be correct
+

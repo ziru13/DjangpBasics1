@@ -1,0 +1,134 @@
+Model Administration---模型管理
+前言:
+		我们希望能将数据hold在我们的app里,因此我们需要创建至少一个模型(model)
+		一旦我们有了一个模型,我们将会希望能够创建它的实例,
+		Django的ORM(object relational mapper对象关系映射)和Admin(管理员) to the rescue
+		
+===========================3.1 What Are Models=========================================
+In Django's ORM, or Object Relational Mapper, 在Django的对象关系映射中
+Models are classes that represent database tables, 模型是代表数据库表单的类
+each model is its own table, 每一个模型是它自己的表单
+and each attribute on a class is a column in the table 在类中的每一个属性是表单中的一列
+when we add new instances of a class in??? the database, 当我们在书库据添加一个类的实例时
+the ORM creates a new row in the table, ORM在表单中创建一个新行/排
+then we can select one or more rows in the table and update or delete them,然后我们可以选择表单中的一行或多行,更新/删除它们
+			model:  	attribute  attribute  	attribute
+									No.        name       phone
+			instance		1					 Mixi				710
+			instance		2				   Ziru				913
+			instance		3					 Chicken    2021
+			
+Django's ORM offers us many more features than that, but we won't need all of them this course
+let's just worry about creating a fairly simple model and getting it lie on our project
+Models belong to an app, and live in the app's models.py, open the file, it's pretty empty to start with
+but Django went ahead and imported the module that has all of the module functionality in it for us
+Model name should be singular by convention, and quite often you are dealing with the single model instance
+so it's weird to say I have this one apples???
+=====models.py===========================
+1. our model is going to be named "Courses" because it has been talking about courses, 
+	 and as it is a class, it starts with the capital letter and inherit from "models.Model",命名我们的模型并宽展Model则个模型
+	 which means that "models.Model" is the class that our models are going to extend
+	 mostly your models you create the??? use Django gonna come from this base class
+	 sometimes you have the customer??? base class, or you will be gonna taking advantage of things like multitable inheritance
+	 we're gonna cover all that in a workshop course later on, 
+2. now we need to add columns to our table, to do that, we add attributes to our class,给我们的表单添加列(属性)
+
+	 we want to know when our class is first created, 
+	 so we can see which instance is old and which one might need to be replaced, ect
+	 also what is the newest one,
+	 add a field called "created_at = models.DateTimeField(auto_now_add=True)",  
+	 what the attribute does is whenever the record is first added/created, it would automatically set "now"
+	 "now" is decided by the timezone that we set in our "settings.py"--TIME_ZONE
+	 	 		添加一个叫"created_at = models.DateTimeField(auto_now_add=True)"的field
+				添加/创建时间自动默认为你在"settings.py"文件中TIME_ZONE的'now'
+	 
+3. a course probably have a title, so let's create a title field with the argument "max_length"
+	 how many characters can this possibly hold? like it could be upper most level, 
+	 创建一个标题区域, 用CharField, 属性为最大长度为-----CharField(max_length)
+	 
+4. lastly, at least for this initial version our course probably needs a description
+	 so people know what the course is about beyond of the title sets, so we'll use another field type here
+	 "description = models.TextField()" ---创建一个文本区域
+	 		TextField is a pretty free form, as far as the text contents go, it just holds text, whatever your text is
+	 		it can be any amount of text, and most time you'll see this specify as being empty or lots of time you will,
+	 		we're not gonna let this all??? be empty so they have to give us something, maybe some sort of text
+ 
+			from django.db import models
+		
+			# Create your models here.
+			class Course(models.Model):
+				created_at = models.DateTimeField(auto_now_add=True)
+				title = models.CharField(max_length=255)
+				description = models.TextField()
+		
+5. so we have our model created, and we have our app, an??? installed apps
+	it live in hte second "learning_site" directory, "settings.py"
+	
+		INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'courses',                    # 这个时你的app
+    
+6. so what we need to do now, if you remember when we talked about "Migrations" before, 
+	 it's all about moving them from one design to another, 
+	 or our design has changed if we added a new table, and our table has columns
+	 so we need to "migrate" our database again, so we need to make migrations
+	 we do that with the "manage.py" command, 我们通过manage.py命令来做migrations
+	 
+	 重新运行 cd learning_site/, 然后 py manage.py,然后会出现一大串commands信息,
+	 so if you go look in the dos??? all link to it, there's a tons and tons of commands here available
+	 the command we want though is  [django] "makemigrations", let's use that
+	 we got output telling us that we've made the migrations, in the "migrations" file we got "0001_initial.py"
+	 =================terminal: py manage.py makemigrations courses===========================
+	 Migrations for 'courses':
+  		courses\migrations\0001_initial.py
+    		- Create model Course
+    =================0001_initial.py===========================		
+		in "0001_initial.py" is what our migration looks like, 
+		it has a "operations" list, and "CreateModel" and object we've created 
+		and the those settings we made before, an id automatically created by Django,不用我们自己指定
+		
+		# Generated by Django 3.1.6 on 2021-02-09 15:21
+		
+		from django.db import migrations, models
+		
+		
+		class Migration(migrations.Migration):
+		
+				initial = True
+		
+				dependencies = [
+				]
+		
+				operations = [
+						migrations.CreateModel(
+								name='Course',
+								fields=[
+										('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+										('created_at', models.DateTimeField(auto_now_add=True)),
+										('title', models.CharField(max_length=255)),
+										('description', models.TextField()),
+								],
+						),
+				]
+7. now we need to run the migration in the terminal specifying the name of the app "courses"运行migrations时要明确app的名字
+	 if we don't specify the name Django just looks for anything inside ??? app that has unrun "migtations"
+	 but we're gonna tell "hey just migrate this one app"
+	===================py manage.py migrate courses==============================
+		Operations to perform:
+			Apply all migrations: courses
+		Running migrations:
+			Applying courses.0001_initial... OK
+
+	 it applies all the migrations, our model states are rendered correctly and it applied courses 0001
+	 that means our migrations ran everything is good to go
+
+8. now that we have a model created and migrated, how do we use it?
+	 in the next video we are going to talk about that
+	 we will use Django super handy "shell command"
+	 
+	

@@ -1,0 +1,73 @@
+about:
+	我们的app可以使用其他的视图和a bit more information for each step
+	我们可以添加那些, and finally get some things linked up with a handy new tag
+=================================================================================
+now, we only missing one view, we don't currently have any way to have actually look at a single step of our training materials
+you can do that by yourself, but we're gonna walk through one more time
+
+like we did with the course detail, we should make a step detail, 
+this view should get the "pk" for the course, and "pk" for the step, 
+we should use the order numbers, so we can go like "step1/2/3"
+but our order numbers aren't unique, so that would present a little bit of challenge, 
+we should find a way to fix that, before we release??? the actual project
+but we're not gonna do that in the video, we can do that on our own
+
+let's see making this view-----"learning_site/courses/views.py"
+we need to import "Step"
+		def step_detail(request, course_pk, step_pk):
+			step = get_object_or_404(Step, course_id=course_pk, pk=step_pk)
+			return render(request, 'course/step_detail.html', {'step': step})
+			
+		# course_id is the foreignkey field, what it holds is the id of the course that it goes to,
+		# the filed knows what table it points to, so we have the table which is the course table,
+		# and we have the id which is the like "2/8/9...",we can figure out exactly which record to go to,
+	
+every good view needs a url, let's make one, "learning_site/courses/urls.py"
+
+		url(r'(?P<course_pk>\d+)/(?P<step_pk>\d+)$', views.step_detail),
+		
+		# and we need to make sure that we import our "step_detail" before our "course_detail"
+		# because we want to capture both of these things we don't want it to be satisfied with one of them 
+		
+now, we have our urls, we need to get our "template" handled, create a "step_detail.html"
+"learning_site/courses/templates/courses/step_detail.html"
+		{% extends "layout.html" %}
+		
+		{% block title %}{{ step.title }} - {{ step.course.title }}{% endblock %}
+		
+		{% block content %}
+		<article>
+			<h2>{{ step.course.title }}</h2>
+			<h3>{{ step.title }}</h3>
+			{{ step.content|linebreaks }}
+		</article>
+		{% endblock %}
+
+		# we want to extend out "layout.html" again, 
+		# and block title, let's print out the step title,then a "-" then the step course's title, then end the block
+		# we can do "course.step" set which is hard to say,
+		# we can do "step.course" to go the other direction in that relationship, 
+		# then we do block content,inside let's add a bit of html to make our designers happy,
+		# we have <article>, <h2> and do "step.course.title"
+		# and then "<h3>{{ step.title }}</h3>", we get the course name and then step name, 
+		# then do "step content and "|linebreaks"
+		#"linebreaks" is Django template filter, filters are kinda like "template's tags"
+		# but they act on a bit of data that you give to them instead of in encapsulating(封装) stuff
+		# and in this example, we're using the "linebreaks" filter, 
+		# which will return "two returns" when you press into her twice ??? a break line between two paragraphs into the closing and opening paragraph tags
+		# so it'll wrap our paragraphs in paragraph tags as we switch to html
+		# the data that we're giving it is the "step content" attribute and that doesn't exist yet, we have to add that later
+		# but for now we just see if it matters at all
+		
+let's go to "http://127.0.0.1:8000/courses/1/1"   # course1 and step1
+we can see 
+		Python Basics
+		what's the deal with strings?
+		
+then change to "http://127.0.0.1:8000/courses/1/2" # course1 and step2
+		Python Basics
+		Using the Shell
+
+we get the title of the course and step
+
+next course, let's add the "model" attribute

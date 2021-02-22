@@ -1,0 +1,49 @@
+since we control our urls through a python module, sometimes urls change, 
+you should try to keep your urls the same once your project has a proper launch
+but while you're developing it, free feel to change them rounds to your heart's desire
+also if you're distributing a reusable app, you can't control the path people give to your urls
+so between custom urls pattern from other developers, and you're changing urls while you develop
+how do you know what url to type into your anchor tags? (<a></a>)
+Django handle, it gives us a template tag just for this
+before we can use our url template tag, we should give our urls names
+now we can't use the path to the view file and the view function, just like what we do in Flask, Django2 template
+but this isn't as common of a practise and most of the time Django developers name the urls to make it easier to refer to them
+so let's add a url tag for "non-name" url and then see about adding names to all of our urls
+
+so let's go to our "learning_site\templates\layout.html"
+we want to have like a header bar, that specify these all of our links stuff
+so let's do <nav></nav>
+			<body>
+        <nav>
+            <a href="{% url 'views.hello_world' %}">Home</a>    # this is our rul tag
+        </nav>
+        <div class="site-container">
+        {% block content %}{% endblock %}
+        </div>
+    </body>
+    
+    #'views.hello_world' this is linking to "views module" and he "hello_world function"
+    # 以上是视频中的步骤,会出错
+    # 在"learning_site/learning_site/urls.py"中path('', views...)中添加name='hello_world'这个属性
+    # 然后在layout中更改为{% url 'hello_world' %}才可以运行
+    
+so let's go to the page "http://127.0.0.1:8000/courses/1/2"
+此时页面的左上角会出现一个带有下划线的"Home"
+then, let's just put the <nav> thing inside of the <div class='site-container'>, it looks like this:
+		<div class="site-container">
+    	<nav>
+    		<a href="{% url 'hello_world' %}">Home</a>
+      </nav>
+    	{% block content %}{% endblock %}
+    </div>
+    
+and go to refresh the page again, we got the big red "Home" button on the top of the page
+that's using it without having a url name, it works and it's not the worst thing ever,
+we could do a similar thing, let's add another tag below the "hello_world"
+		<div class="site-container">
+    	<nav>
+    		<a href="{% url 'hello_world' %}">Home</a>
+    		<a href="{% url 'courses.views.course_list' %}">Courses</a>
+      </nav>
+    	{% block content %}{% endblock %}
+    </div>

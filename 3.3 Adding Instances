@@ -1,0 +1,115 @@
+so we have our model created and migrated, we don't have anything in the database yet
+so how do we go back adding things into the database?
+we could write a python script that create new instances for us,
+but that's not really as friendly??? just playing around as I like.
+thanks to some configurations requirements that Django have, it's actually not that straight forward
+we don't have to do a whole bunch of setting up,
+you should know by now that I don't ask you these questions without a solid answer already in mind???
+Django has another handy command for "manage.py" that let us go into the python shell that
+Django can figuration bits??? already load it
+we can use it to explore the ORM and create some record
+
+====================py manage.py shell=============================
+the command we want to run is "py manage.py shell" ,
+and you see this look just like a regular python shell, and it is
+but it has Django's functionality loaded as our "settings" all kinda things like that
+
+		py manage.py shell
+			Python 3.7.4 (tags/v3.7.4:e09359112e, Jul  8 2019, 20:34:20) [MSC v.1916 64 bit (AMD64)] on win32
+			Type "help", "copyright", "credits" or "license" for more information.
+			(InteractiveConsole)
+
+====and the let's import our model, no feedback
+		from courses.models import Course
+
+when we do a query with Django's ORM, we have to use the model name and it's??? object's attribute
+object points to what's called "model's manager" 
+which is a class that controls all the access to the model's instances and other things
+w're not going to get into the "model's manager" this course, it's a deep area
+the most common query is to get all of the instances, so let's see what we get when we do that
+
+====Course.objects.all()
+		<QuerySet []>
+		
+		we get back nothing, because we haven't created anything yet
+		so we get back what's call an empty "QuerySet []", it looks like a list, 
+		but it's actually a "QuerySet"
+		
+====type(Course.objects.all())  查看它的类型时一个QuerySet,不是set
+		<class ‘django.db.models.query.QuerySet’>
+
+创建一个
+====c = Course()  
+====c.title = "Python Basics"
+====c.description = "Learn the Basics of Python"
+
+at this point, "c" is a course but it's not in the database yet
+we have to call the "save()" method to has it put into the database
+====c.save()
+
+now we can find it in the database
+====Course.objects.all()
+		<QuerySet [<Course: Course object (1)>]>
+		我们获得一个QuerySet, with a single item in it
+
+but course's Course object is not very descriptive, we will change that in a second
+we went through a bunches steps to create our instance
+we have the create the course??? add the title, the descriptions,??? save it, we can do that quicker
+
+let's "exit()" and restart the shell
+====py manage.py shell
+		Python 3.7.4 (tags/v3.7.4:e09359112e, Jul  8 2019, 20:34:20) [MSC v.1916 64 bi
+		t (AMD64)] on win32
+		Type "help", "copyright", "credits" or "license" for more information.
+		(InteractiveConsole)
+====from courses.models import Course
+
+so the last time we did it we did the "c = .....", it was a lot od steps
+so let's just make one all in one step
+====Course(title="Python Collections", description="Learn about list, dict, and tuple").save()
+
+====Course.objects.all()
+		<QuerySet [<Course: Course object (1)>, <Course: Course object (2)>]>
+
+now I got two items, I don't know which from which, 
+the first one is probably is "Python Collections" the another one "Python Basics"
+but we don't know, but again though, we were making one in memory
+we were creating "Course(title="Python Collections", description="Learn about list, dict, and tuple")" this in memory, 
+and we called "save()" on it, and that works, we just did it twice, it obviously works
+but it's two steps, so we can do it all on one step, let's do it all in one step
+and that's why we will three things in our database
+
+====Course.objects.create(title="Object-Oriented Python", description="Learn about Python's classes")
+		<Course: Course object (3)>
+		
+		when we did "save()" there, anything came back out
+		but when we did "create()", we get back an "Object"--<Course: Course object (3)>
+		so "create()" always returns an object, so it's handy depending what I am doing
+
+so let's check out what we got
+====Course.objects.all()
+		<QuerySet [<Course: Course object (1)>, <Course: Course object (2)>, <Course:Course object (3)>]>
+		
+		we got htree objects
+		
+so we've got few items, let's update the presentation of our models, "exit()"
+and we go back to "models.py", what we can do for our class is, we can define a method
+let's use this instead of, we don't want "Course", "Course.objects", we want something that makes sense
+		def __str__(self):
+			return self.title  # because the title is what the thing is
+		
+		
+		# __str__ defines how this thing turns into a string
+													so Django uses it whenever prints out a reference to an instance
+													so in the shell and some other locations, 
+													it's just like "hey, here's the thing, and here's the way to descript it"
+													this is what it the useage of __str__
+													
+====py manage.py shell
+====from courses.models import Course
+		<QuerySet [<Course: Python Basics>, <Course: Python Collections>, <Course: Object-Oriented Python>]>
+		
+		we got our three QuerySet, it's a lot easier to read and nicer to find your way around
+		
+以后的课程会用到更多Query
+下一节课,建一个view to show off what our newly created courses

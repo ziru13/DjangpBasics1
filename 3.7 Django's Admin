@@ -1,0 +1,93 @@
+one of the Django killer features, 
+one of the thing you show the old school PHP ??? developer to make their Java's??? job
+is "django admin"
+it's just the fact that you have to do so little work to get something that is so useful
+
+the project is still running, let's got to project's "admin"
+		http://127.0.0.1:8000/admin/l  出现一个Django Administration的登录网页,有用户名,密码,登录键
+		
+we have to log in, the last thing we want is a random person of the internet logging in and messing our site
+let's go back to the terminal to create an account, and kill out server ==== ctrl + C
+
+your probably ??? a pattern here, we have to create something and there is a django command for us,
+we are going to use the one call "createsuperuser"
+==== py manage.py createsuperuser
+		Username (leave blank to use'ziruf'): chickenfish
+		Email address: djangobasics@test.com
+		Password:  (不会显示出来的 zirufish)
+		Password (again):
+		Superuser created successfully.
+
+when you do this for your actual lie-on??? the internet site, you make sure have a very good password
+run again and see if we can log in
+==== py manage.py runserver 127.0.0.1:8000
+
+when we first log in we only have two things in the admin "Users" and "Groups"
+these are two "Models" that are provided by django,
+and they are under the "Authentication and Authorization" header
+they belong to Django's "off"??? app
+with django give it a custom name in the admin, 
+that's why it says "Authentication and Authorization" instead of just "OFF"???
+		Authentication and Authorization
+			Groups
+			Users
+			
+
+let's see what's in the area for "Users", there is the user account we created
+we can search for users, filter them by different statics on the right side
+
+let's click on the "Username", it's a form for changing all of our user's details
+the "change user" page shows--（http://127.0.0.1:8000/admin/auth/user/1/change/）
+
+"Django developers" has to do very little work to make this exactly form show up
+let's see what we have to do to get something useful in the admin
+go back to  the courses' app, and we have the "courses/admin.py"
+we can see that it has a message telling us to "Register your models here"
+so first thing we need to do is "import the models"
+			from .models import Course
+
+			# Register your models here.
+			admin.site.register(Course)   # admin, the currently exist site, and we're gonna register "Course", 
+
+so we registered our model, we see that the server restarted, let's check the "admin" in the page
+let's click on "Home", and we got the "Courses" header and "Courses" below it
+		Authentication and Authorization
+			Groups
+			Users
+			
+		COURSES
+			Courses
+			
+let's check that out, that is the each of the course we created in the shell
+		Select course to change
+		Course
+		Object-Oriented Python
+		Python Collection
+		Python Basics
+
+let's look on "Python Basics", anf there is a form with "Title" on??? and "Description" field
+		Change Course
+		Title           Python Basics
+		Description			Learn the basics of Python
+		
+		
+		Delete		Save and add another			Save and continue editing		SAVE   (buttons)
+		
+now, where is the "created_at" field, where is the "id" we saw in migration?
+the "id" is automatically set, it's auto???ting, 
+so django is like "ok, you don't need that, I hide that away"
+and kinda same idea with our "created_at" field, we set it to be "auto_now_add" as "True"  (models.py)
+so Django goes "Ok, you not going to be editing that because you're setting it automatically, 
+	so I'll just hide it for you, cause you don't need that"
+	
+let's see about creating a "new course", go "Home", "COURSES/Courses", "ADD COURSE +" button
+we can also just click its "Add", let's do this way
+			Add course
+			Title						Python Testing
+			Description			Learn to test your Python application with unittest and doctest!
+			
+in the "http://127.0.0.1:8000/admin/courses/course/" page, we have four courses,
+that is so much easier than the creating step in the shell
+
+adding model instances through the shell is simple enough, 
+but "django-admin" is even easier, we will the the "admin" later

@@ -1,0 +1,100 @@
+let's make a view in our app that will list out all the available courses
+we have to do a "query" to select all of the courses 
+but I'm sure you remember how to do that in the last video
+
+we're going to start in "courses/views.py"
+Django provides us with an import at the top "from django.shortcuts import render"
+
+a function name "render" that we haven't seen before, it's very handy for us when using templates
+for this first view though, let's just return plain text like we did before, 
+which means we need to import  " from django.http import HttpResponse" class again
+and then we have to create a new view, a view to show a list of courses, 
+so name "course_lists", and takes a "request" as an argument
+
+since we want to use our "Course" model, we should import it "from .models import Course"
+the "." means looks for the model's module in the current directory
+
+now I can just use the model just like everything, and we're gonna use that
+and merge it together into a string that joins all the titles and I will send that back
+so we will have all the titles
+		from django.http import HttpResponse
+		from django.shortcuts import render
+
+		from .models import Course
+		# Create your views here.
+		def course_list(request):
+    		courses = Course.objects.all()   # we select all the courses the exist
+    		output = ", ".join(courses)      # join them together with ","
+    		return HttpResponse(output)      # we return the HttpResponse that has all the names joining by commas
+
+of course to see this view, we have to create a URL for it, 
+this is interesting when you want to do it for an application and you want to do it cleanly 
+first thing, we don't have a "urls.py" in our app (courses目录), we should create one
+
+===courses/urls.py====
+we first thing need to import the url object from Django
+and we all need to import our "views"
+??? we have to create our url pattern's variable and fill it up with our url
+it's weired that you have to name the variable exactly your url patterns
+python doesn't usually do presciptive???, but it is Django, not just in python, 
+Django can make whatever rules at once, let's make our variable
+
+
+		from django.conf.urls import url
+
+		from . import views
+		# make our variable, a list, in the old Django, it didn't use to be a list, now it's just a list
+		urlpatterns = [
+    	url(r'^$', views.course_list), 
+		]
+		
+		# I gave this the same url as our home page, is that going to matter?
+===cd learning_site/
+====py manage.py runserver 128.0.0.1:8000
+		然后刷新网页,我们看到Hello World,所以没有关系,我们仍然得到home page
+		那部分原因可能时我们的courses/urls.py这时候还没有被Django loaded
+		Django doesn't automatically look for the urls.py inside the apps
+		and we haven't told it to look there, so it hasn't, let's change that
+		
+go to the "learning_site/urls.py" from the project, and add a new line before the "admin" line
+		from django.contrib import admin
+		from django.urls import path, include
+
+		from . import views
+
+		urlpatterns = [
+    		path('courses/', include('courses.urls')),  # 按照文件上面给出的指示写,一个include function
+    		path('admin/', admin.site.urls),
+    		path('', views.hello_world),
+		]
+		
+		# "include" function lets us include a set of url patterns from somewhere else
+		   in this case we're including them from our "courses" app, but why in ''--include('courses.urls')
+		   Django turns that string that we give it "courses.urls" this string, into an import path
+		   which let us find the url patterns, 
+		   this means we don't have to import the urls ourselves into every place we want to use them 
+		   this really helps with "plugable" mess and ???lerety that we keep bringing up
+		   
+再次刷新网页,没有发生任何改变,如果去"http://127.0.0.1:8000/courses/",会得到一个Error
+since we include the 'courses.urls' at "/courses", ???the url we have there is an empty string
+???as long as something comes after "courses", we got that course's view
+but that view has a bug, let's see if we can fix that
+
+		TypeError at /courses/
+		sequence item 0: expected str instance, Course found
+		
+		we got the a Course at the beginning (Course found), and expected a "str instance"
+		
+回去"views.py", 
+	we're using "join", it expects everything here to be strings, but those aren't strings, those are "courses"
+	so we're gonna fix that with a quick little list ???, 
+				output = ", ".join(courses)
+	 改成:output = ", ".join([str(course) for course in courses])
+basically what we have is a "for" loop inside of a list, so it creates a list over looking through the "for" loop
+
+此时bug修好了,网页显示--http://127.0.0.1:8000/courses/
+		Python Basics, Python Collections, Object-Oriented Python
+		
+but no one wants to have to go into the Django shell all the models instances, 
+there has to be a better way
+the "django-admin" is coming next!

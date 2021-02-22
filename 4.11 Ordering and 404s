@@ -1,0 +1,66 @@
+we ??? to do functionality that we haven't addressed yet with our order filled, 
+and we have that 404s just waiting to happen
+let's open up "courses/models.py" and we have this "order" field default of "0" in class "Step"
+by default Django orders record by their id, but ??? is automatically generated and implemented
+the first record created gets a "1" then "2" and so on, it's awesome until you need to reorder sth, 
+like as sometimes happens when I'm writing a course or entering into our CMS here at treehouse
+whay if we??? forget to put in "Step 3" and put in "Step 4" first???, now it come out out of order
+you all won't know which order to watch this videos in, that's not good, so we're gonna fix this, 
+in two simple steps
+
+first, we're gonna add a new section to our model "Step" in "courses/models.py"
+			class Meta:
+				ordering = ['order', ]  # order them by order
+				
+
+			# Django model has a optional piece??? to them , known as class Meta, 
+			# if you did either the "peewee" courses, you've seen sth similar to this, 
+			# it's a class inside of our model class that controls how that model does a few things
+			# we're gonna use it to set a default ordering for our instances, 
+			# "ordering" part, that feels a little fall back to the id, 
+			# this tells Django to order all our the records by their "order" attribute,
+			# it's a conflict like two??? records both have an order of "2"
+			# like Django automatically put us in an order by id, we can tell Django to use other field as well, 
+
+let's check out and make sure nothing has changed,  "http://127.0.0.1:8000/courses/1/"
+now add a new step in our "admin"-- http://127.0.0.1:8000/admin/courses/course/1/change/
+in "Step #2", 
+		Title: Using the Shell
+		Description: Learn how to use Python's shell to play with language and get help.
+		
+		# we want this to be first, let's "save and continue editing", now we have two steps
+		# check "http://127.0.0.1:8000/courses/1/"
+		# 1st:what's the deal with strings?/2rd:Using the Shell, change the 2rd to be the 1st
+		# and it's gonna be 2rd in the page cuz it has the higher id
+		# they both have the same order, 0, but one has a higher id, we can just mark the "What..." as 1,
+		# "Using..." as 0, or 2 to 1, "save and continue editing"
+		# refresh the page, now "Using..." has become the 1st and "What..." the 2rd
+		
+
+now we should address the possible "404s", we have this "courses/views.py"
+and what if somebody else put in a bad url, so we don't have 18 courses yet
+"http://127.0.0.1:8000/courses/18/". it shows the 404, but it's Django 500 error page, "DoesNotExist at /courses/18/"
+how do I know it's a Django 500 page, cuz Django gives me a handy traceback below, 
+"Trackbacks" are only generated when there is error with your server, like a python "exception", 
+and errors in the server should always generate a "500",
+let's fix this view so it gives a view "404" like it should, instead of giving us a "500"
+
+go to "courses/views.py", we need to import the "shortcut" for throwing the "404" when an object isn't found in the database, 
+since I set it up as a "shortcut", you know that there's a long way of doing it, 
+
+import get_object_or_404
+then in the "def course_detail(request, pk)", "course = ..." here we're doing our course lookup
+let's use "get_object_or_404", the object is a "Course" type, our lookup is a "pk=pk"
+			def course_detail(request, pk):
+				# course = Course.objects.get(pk=pk)
+				course = get_object_or_404(Course, pk=pk)
+				return render(request, 'courses/course_detail.html', {'course':course})
+				
+				# the '.get(pk=pk)'= get, the object type is "Course", if it doesn't happen, throw a 404
+				
+let's go to the page, and try a bad url, "http://127.0.0.1:8000/courses/18/"
+it shows the "Page not found (404)"
+
+providing good errors for our users is a must, the last thing we want is to confuse or lose users
+cuz we didn't explain exactly what went wrong
+we can provide custom views and templates for 404, 500, and other errors code too, 

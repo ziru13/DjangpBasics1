@@ -1,0 +1,59 @@
+if we have to repeat every all these HTMLs that our site needed, headers, footers, menus ect in every single template
+that get pretty old. wen didn't even use any of these stuffs in the two templates we made, 
+but it's sure being nice to be able to have a link to our course's page on every page of our site
+this is noe place our "Template Inheritance" comes in really handy
+
+Templates that inherit from each other are a fun part of most templates insistences???
+most of the time you have a master or parent template, that everything else extends from
+we work on some projects though where the intermediate templates too
+so maybe the top most almost are really like a "grandparent" or "great-grandparent" template???
+the Django approach to this is really simple, so go back to the "Directory sector", 
+
+inside of this out of most "templates" directory, let's make a new "layout.html" file
+we're gonna put in the basic of an html page, nothing ground-breaking here
+			<!DOCTYPE html>
+			<html lang="en">
+    		<head>
+        	<title></title>
+    		</head>
+    		<body>
+
+    		</body>
+			</html>
+			
+??? inheritances b???, but template's inheritance works kinda like class inheritance does
+and object oriented programming, when we extend a parent template, we get everything that's in it,
+but that means we also need a way to override what's in there 
+and what's the stuffs that we want to have from our child/grandchild template
+just like we get it??? reassign an attribute or redefine an method in a parent class
+Django's template we do that by defining overridable blocks in our parent templates
+let's take a couple of them in here, we're gonna put one inside the title tag, and the body tag
+			<!DOCTYPE html>
+			<html lang="en">
+    		<head>
+        	<title>{% block title %}{% endblock %}</title>
+    		</head>
+    		<body>{% block content %}{% endblock %}</body>
+			</html>
+
+as you can see our "template's blocks" have a starting tag, that is the block's name, title/content,
+and they both have a closing in the block tag as well
+				<title>{% block title %}{% endblock %}</title>  整个block都在标签内
+				<body>{% block content %}{% endblock %}</body>
+what's kinda neat is if we want to we can actually say {% endblock title %}/{% endblock content %}, but we don't have to
+
+let's go edit the "home.html" template, since we just have it kind of handy there 
+and we're gonna add one line to its top {% extends "layout.html" %}, 
+this says "hey, fetch everything that's in this html ans use that", let's just save and go render this again
+we got nothing in the page, why? becuase there is nothing in the "layout.html" template 
+and we didn't do anything in the "home.html" template, we just takes "extends" in it, we didn't override any blocks
+so let's override a block,and the do a block content around our existing <h1>, 
+			{% block title %}Hello there!{% endblock %}
+			{% block content %}
+			<h1>Welcome!</h1>
+			{% endblock %}
+then come back to the page again and refresh, we get "Hello there!" in the title and our <h1> "Welcome!"
+
+template inheritance is a super handy part of Django template insistence
+before we get back to the python side of our Django project, let's look at one more important part of template
+and our site design and assets

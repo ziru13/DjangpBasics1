@@ -1,0 +1,15 @@
+安装Django时,会自动安装一个命令行工具--Django-admin
+在terminal中:
+	django-admin startproject learning_site
+	
+	不会有任何feedback,但是会生成一个learning_site的目录,
+	learning_site
+		learning_site
+			asgi.py
+			setting.py:我们的设置
+			url.py: 我们整个项目的基本url==base url
+			wsgi.py:控制我们的项目,是entry point
+		manage.py: 给我们的项目run commands,如做application, 移动数据等
+							 我们设置为我们项目entry point的主要main control script
+		
+安装了Django,即是一个已经创建了一个项目

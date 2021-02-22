@@ -1,0 +1,102 @@
+let's add the "model" attribute
+
+if you said "migrate" when I asked what else to do, you'are right, 
+let's see adding that field, since we have an existing route in the database, 
+we're going to have to do sth extra, let's open up our "learning_site/courses/models.py"
+let's add another "Text field" to the "Step" model
+		content = models.TextField()
+		
+		# we want to be sure call it "content", because that's name we've been using in the template,
+		# we can change the name, change the template,  
+		# since we change the data model, we change the database,
+		# we should change actually change the database with migration
+
+in the terminal, "ctrl + C" to end the server, 
+and then "py manage.py make migrations courses", we got a message, the problem is
+we've added this field, our "content" field, it can't be null, since it is just a list of text field
+it has to be sth in that field, or Django has to know what to do with it in case??? there's nothing in tha field,
+it would be fine if didn't have a existing route in the database but we do we have some steps we've already made,
+so Django doesn't know what to do with the routes already in the database,
+our database doesn't know what to let Django do with the route that already in the database
+so basically Django and database??? they knot their hands and go 'hey, tell us what to do'
+so we can provide an existing default for all the ones??? already have been put in, and it only happen now
+it won't happen when we are on another??? database, 
+or we can quit, se can set a default in the model and that will happen no matter what
+I think we should quit and change some models, so let's hit "2"
+	
+	You are trying to add a non-nullable field 'content' to step without a default; we can't do that (the database needs something to populate existing rows).
+	Please select a fix:
+ 		1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+ 		2) Quit, and let me add a default in models.py
+	Select an option: 2
+	
+most of the time we would let our field be nullable, which means that it can hold new data
+but since it's a "TextField", that creates a weird way having two false values for empty texts, or "character field"
+we don't want that, we want one single obvious expressive way having a false value, so let's just set that
+in the same content TextField, we're gonna set "blank=True" and  that controls the form in our admin
+so it says "hey you don't have to get a value here, "
+and the "default" if they don't put anything in, it's gonna be an empty string
+	content = models.TextField(blank=True, default='')
+	
+so the worst case scenario??? nobody is providing??? that data scenario is an empty string, 
+which is fine, empty string is a little bit of data, and it can be blank in the form we don't have to have value in the form
+
+ok, let's try making this migration again "py manage.py makemigrations courses"
+		Migrations for 'courses':
+			courses\migrations\0003_auto_20210220_2106.py
+				- Change Meta options on step
+				- Add field content to step
+				
+cool, it made the migration, noe we can go head and "migrate" our model "courses"
+		"py manage.py migrate courses"
+		
+		Operations to perform:
+  		Apply all migrations: courses
+		Running migrations:
+  		Applying courses.0003_auto_20210220_2106... OK
+  		
+  	# it's done and it's ok, no problem
+
+so let's go add some "content" to our step in the admin, which means we need to run the server again
+	"py manage.py runserver 127.0.0.1:8000"
+	
+	we're looking at the shell??? --- "http://127.0.0.1:8000/admin/courses/course/1/change/"
+	we can see in the "STEPS", there is a "Content" field for each step, 
+	so the go to "Step: Using the Shell" and below is our "Content" 
+	so add in a little bit of stuff here, let's say
+	
+	Title: Using the Shell
+	Description: Learn how to use Python's shell to play with language and get help.
+	Content: Launch the shell with 'Python'.
+	
+					 You can exit the shell by entering 'exit()' or 'quit()'. 
+					 
+					 You can also exit the shell by pressing CTRL and D.
+					 
+	then let's go and save that and  go to "http://127.0.0.1:8000/courses/1/2" to refresh our page
+	it shows:
+			Python Basics
+			Using the Shell
+			
+			Launch the shell with 'Python'.
+			
+			You can exit the shell by entering 'exit()' or 'quit()'.
+			
+			You can also exit the shell by pressing CTRL and D.
+
+	# in the content are each of our line, and if we inspect one of these, such as 'Python'
+	# we can see the <p></p> tags are around each line
+		<p>
+		Launch the shell with 'Python'.
+		</p>
+		...
+		
+that's great, we got paragraphs jus like we wanted, 
+you might want to go back to our other template and put the "linebreaks" filters in the places where we printed out descriptions
+you know sth we've been missing in this entire course, we don't have a single link anywhere, 
+we should use "anchor" tags <a></a>, there's a great part of a html
+	
+	
+					 
+					 
+					 
