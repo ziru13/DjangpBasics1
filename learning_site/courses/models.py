@@ -15,7 +15,7 @@ class Step(models.Model):
     description = models.TextField()
     content = models.TextField(blank=True, default='')
     order = models.IntegerField(default=0)
-    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING)  # Django 2.0以上要求on_delete
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)  # Django 2.0以上要求on_delete
 
     class Meta:
         ordering = ['order', ]  # order them by order

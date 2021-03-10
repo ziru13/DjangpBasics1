@@ -1,9 +1,9 @@
-so far, we have a project with an app, a global project wide??? view--our home page, there is??? a template,
+so far, we have a project with an app, a global project wide??? view--our home page  that renders a template,
 that template also uses a "master layout" template, in our app, we have two models, two migrations
 we have a model registered with Django's admin and we have a view to see all of the courses we've created
 now, let's go seeing the details of a single course
-now, we have two models: "Course" and "Step" and our administer setup??? to edit both of them nicely
-so, let's see about adding a view for looking at a single course as as student
+now, we have two models: "Course" and "Step" and our admin setup??? to edit both of them nicely
+so, let's see about adding a view for looking at a single course as a student
 
 go to "courses/views.py"
 we have a way to view all of the courses, we get all the course's names
@@ -20,12 +20,12 @@ cuz Django automatically creates one for us,
 			course = Course.objects.get(pk=pk)
 			return render(request, 'courses/course_detail.html', {'course': course})
 		
-		# as a direct request??? and take a "pk", this tells python that we're going to have two arguments to our view
+		# it takes a request and a "pk", this tells python that we're going to have two arguments to our view
 		# Django automatically supplies the request, when it call the "view" function
 		# and we'll provide the "pk" through our url
 		# the rest of the view is very straightforward, we need to get the course of the given "pk" then render the template
 		# we didn't define the "pk" attribute, so where it comes from?
-		# Django knows what field is our primary key, which is what "pk" stands for, primary key,by default is the id
+		# Django knows what field is our primary key, which is what "pk" stands for,by default is the id
 		# so Django is like "Oh, you want the primary key, you want the id, here you go, let's just go to it"
 		# so we'll deal with what happens if the course didn't exist, a little bit later on, 
 		# now we'll just pretend nobody's gonna type in a bad url???, so we need a url for this
@@ -34,10 +34,10 @@ go to "courses/urls.py"
 we need to add a new line in the next "url" that is similar with the upper one
 		urlpatterns = [
     	url(r'^$', views.course_list),
-    	url(r'(?P<pk>/d+)/$', views.course_detail),
+    	url(r'(?P<pk>\d+)/$', views.course_detail),
 ]
 		
-		# we're gonna catch a "pk"-?P<pk>, /d, + means more than one of those,/$ end the line
+		# we're gonna catch a "pk"-?P<pk>/d, + means more than one of those,/$ end the line
 		# then go to "views.course_detail"
 		# ?P<pk>: a name to group, we call this "group pk"
 		# /d: one or more digits, that come in the url, then go to "views.course_detail"

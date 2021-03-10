@@ -28,8 +28,8 @@ so it's weird to say I have this one apples???
 1. our model is going to be named "Courses" because it has been talking about courses, 
 	 and as it is a class, it starts with the capital letter and inherit from "models.Model",命名我们的模型并宽展Model则个模型
 	 which means that "models.Model" is the class that our models are going to extend
-	 mostly your models you create the??? use Django gonna come from this base class
-	 sometimes you have the customer??? base class, or you will be gonna taking advantage of things like multitable inheritance
+	 most your models that you create through??? Django are gonna come from this base class
+	 sometimes you have the customer??? base class, or you will be gonna taking advantage of things like Multi table inheritance,
 	 we're gonna cover all that in a workshop course later on, 
 2. now we need to add columns to our table, to do that, we add attributes to our class,给我们的表单添加列(属性)
 
@@ -49,7 +49,7 @@ so it's weird to say I have this one apples???
 4. lastly, at least for this initial version our course probably needs a description
 	 so people know what the course is about beyond of the title sets, so we'll use another field type here
 	 "description = models.TextField()" ---创建一个文本区域
-	 		TextField is a pretty free form, as far as the text contents go, it just holds text, whatever your text is
+	 		TextField is a pretty free form, as far as the text contents go, it just holds text, whatever your text is,
 	 		it can be any amount of text, and most time you'll see this specify as being empty or lots of time you will,
 	 		we're not gonna let this all??? be empty so they have to give us something, maybe some sort of text
  
@@ -61,8 +61,8 @@ so it's weird to say I have this one apples???
 				title = models.CharField(max_length=255)
 				description = models.TextField()
 		
-5. so we have our model created, and we have our app, an??? installed apps
-	it live in hte second "learning_site" directory, "settings.py"
+5. so we have our model created, and we have our app, an installed apps
+	it live in the second "learning_site" directory, "settings.py"
 	
 		INSTALLED_APPS = [
     'django.contrib.admin',

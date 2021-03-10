@@ -4,7 +4,7 @@ Course 4: Django Template
 ** 在我们的项目中CSS assets的使用
 ==================================================
 templates in Django are a lot like templates in Flask
-if you are not familiar with the idea of template in system???, it usually involves a few parts
+if you are not familiar with the idea of templating system, it usually involves a few parts
 templates are usually HTML, that has special tags and commands in it
 	{{ course.title}}, this tag that you print our data, 
 										 create loops, conditionals 
@@ -24,7 +24,7 @@ it also expects inside "templates" that you'll have a folder/directory with the 
 so "courses/templates/courses", the reason we do this is 
 so that we have all of our app's specific templates inside this "name space" directory "courses"
 then if we need to let people override them, they just make their own "templates" directory name "courses"
-or if we want to have templates that ??? like save multiple sections we can name them different names...
+or if we want to have templates that are like save multiple sections we can name them different names...
 
 创建 course_list.html (courses/template/courses/course_list.html)
 of course it doesn't have to be the same name as our view (def course_list), it's just easy for us to know that it's a list of the courses
@@ -36,7 +36,7 @@ we want to print out the "title" and "description" of the course, we use two {{}
 			{% for course in courses %}
 			# things in here will get done once for every course that is in our courses' list
 			<h2>{{ course.title }}</h2>
-			{{ course. description }}
+			{{ course.description }}
 			{% endfor %}
 			
 	since the fields belong to the model instance as attributes, we access them with the "."
@@ -56,7 +56,7 @@ we're gonna "return" the "render" function with 3 arguments
    1st: the "request" come from the one above in "def course_list(request)" 
    2nd: take the template to render "'courses/course_list.html'"
    3rd: optional, takes a "context dictionary", because it is the context with which the template would be rendered
-   			key name: 'courses', and it's going to be our ??? pick up early named 'courses'--(courses = Course.objects.all())
+   			key name: 'courses', and it's going to be our name we picked up earlier named 'courses'--(courses = Course.objects.all())
    	there are others arguments that "render" can take, but we're just handling this simple use
    
 now run the server
@@ -65,14 +65,14 @@ it shows all the courses and theirs descriptions
 
 this is creating a template for an app, that's fairy straightforward, 
 but what if we want to have a layout for the "Homepage",  the page--"http://127.0.0.1:8000/"
-we made in "courses/learning_site/views.py", 
+we made in "learning_site/learning_site/views.py", 
 			from django.http import HttpResponse
 			def hello_world(request):
     		return HttpResponse("Hello World")
 
 it's view that doesn't live inside of an app
-so we can't just add and "templates directory" to an app and be done with it
-we get ??? template for it to our courses app but that doesn't make a lot of sense
+so we can't just add an "templates directory" to an app and be done with it
+we can add a template for it to our courses app but that doesn't make a lot of sense
 because that page may not come with our courses' app, 
 so we're gonna add a directory into our out of most "learning_site (最外面那个learning_site)
 and we need to change our "learning_Site/learning_site/settings.py", 
@@ -98,7 +98,7 @@ find the "TEMPLATES = []" part, "'DIRS': [],"
 		# BACKEND renders 'django.template.backends.django.DjangoTemplates'
 			it uses the Django template renderer 
 		#'APP_DIRS' directory is look for template directory inside of the apps
-			let's say??? it does the templates courses things]
+			let's do the templates courses things]
 			
 		what we care about is the " 'DIRS' = [] " list, it lets us specify other directories 
 		that we want included for it to go to look for templates in???
@@ -109,7 +109,7 @@ find the "TEMPLATES = []" part, "'DIRS': [],"
 now we need to create our template and change our view
 create a "home.html" in "templates" directory
 		<h1>Welcome!</h1>
-then add our "views.py" in "learning_site/views.py"
+then edit our "views.py" in "learning_site/views.py"
 	#from django.shortcuts import render
 	#def hello_world(request):
   #  return HttpResponse("Hello World")

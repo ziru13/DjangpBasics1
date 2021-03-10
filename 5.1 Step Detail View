@@ -54,7 +54,8 @@ now, we have our urls, we need to get our "template" handled, create a "step_det
 		#"linebreaks" is Django template filter, filters are kinda like "template's tags"
 		# but they act on a bit of data that you give to them instead of in encapsulating(封装) stuff
 		# and in this example, we're using the "linebreaks" filter, 
-		# which will return "two returns" when you press into her twice ??? a break line between two paragraphs into the closing and opening paragraph tags
+		# which will return "two returns" when you press enter twice and there's a blank line between two paragraphs 
+			into the closing and opening paragraph tags
 		# so it'll wrap our paragraphs in paragraph tags as we switch to html
 		# the data that we're giving it is the "step content" attribute and that doesn't exist yet, we have to add that later
 		# but for now we just see if it matters at all

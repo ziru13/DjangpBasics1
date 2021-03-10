@@ -64,7 +64,7 @@ let's "exit()" and restart the shell
 		(InteractiveConsole)
 ====from courses.models import Course
 
-so the last time we did it we did the "c = .....", it was a lot od steps
+so the last time we did it we did the "c = .....", it was a lot of steps
 so let's just make one all in one step
 ====Course(title="Python Collections", description="Learn about list, dict, and tuple").save()
 
@@ -90,7 +90,7 @@ so let's check out what we got
 ====Course.objects.all()
 		<QuerySet [<Course: Course object (1)>, <Course: Course object (2)>, <Course:Course object (3)>]>
 		
-		we got htree objects
+		we got three objects
 		
 so we've got few items, let's update the presentation of our models, "exit()"
 and we go back to "models.py", what we can do for our class is, we can define a method
@@ -107,6 +107,7 @@ let's use this instead of, we don't want "Course", "Course.objects", we want som
 													
 ====py manage.py shell
 ====from courses.models import Course
+====Course.objects.all()
 		<QuerySet [<Course: Python Basics>, <Course: Python Collections>, <Course: Object-Oriented Python>]>
 		
 		we got our three QuerySet, it's a lot easier to read and nicer to find your way around

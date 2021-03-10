@@ -28,7 +28,7 @@ so let's do <nav></nav>
     # 然后在layout中更改为{% url 'hello_world' %}才可以运行
     
 so let's go to the page "http://127.0.0.1:8000/courses/1/2"
-此时页面的左上角会出现一个带有下划线的"Home"
+此时页面的左上角会出现一个带有下划线的"Home" 可以跳转到home page
 then, let's just put the <nav> thing inside of the <div class='site-container'>, it looks like this:
 		<div class="site-container">
     	<nav>
@@ -47,3 +47,130 @@ we could do a similar thing, let's add another tag below the "hello_world"
       </nav>
     	{% block content %}{% endblock %}
     </div>
+    
+    # we get a link to courses which gives us all of our courses
+    # 以上是视频中的步骤,会出错
+    # 我自己改成 {% url 'list' %},因为下面的步骤在"learning_site\courses\urls.py"中添加了name的参数
+    # we got a big red "Courses" button for "Courses"
+    
+???great when we have to use "url arguments" though like the "pk", "course_pk" ect, 
+also what if??? you have a very very long name that the module does, then you have this long "url tag", 
+that might be hard to remember that whole path to it, so it's not great
+and if you're distributing this, you don't want to require the developer's user package 
+to have to remember whatever long complicated path that you've set up
+let's see by giving our url names so we can reference them more easily
+
+so in the "learning_site\courses\urls.py" our courses' app
+we have our three urls here, let's give each one of them a name
+we do that by specifying "name=sth", so
+		urlpatterns = [
+    	url(r'^$', views.course_list, name='list'),
+    	url(r'(?P<course_pk>\d+)/(?P<step_pk>\d+)$', views.step_detail, name='step'),
+    	url(r'(?P<pk>\d+)/$', views.course_detail, name='detail'),
+		]
+		
+		# just some nice simple names, hopefully now you're thinking those names are gonna conflict??? eventually
+		# you're right, they would, we would have conflict with some other app somewhere
+		# but we're gonna take an extra step to prevent that here a little bit
+		# for now we just set the rest of our urls
+		
+so go to "learning_site\courses\templates\courses\course_list.html"
+fist, let's add our "{% extends "layout.html" %}"
+
+			{% extends "layout.html" %}
+
+			{% block title %}Available Courses{% endblock %}
+
+			{% block content %}
+			<div class="cards">
+    		{% for course in courses %}
+    		<div class="card">
+        	<header><a href="{% url 'detail' pk=course.pk %}>{{ course.title }}</a></header>
+        	<div class="card-copy">
+        		{{ course.description }}
+        	</div>
+    		</div>
+    		{% endfor %}
+			</div>
+			{% endblock %}
+			
+			# and we should add our "anchor" tag in the <header> course.title
+			# 因为在"courses/urls.py"中 name='detail'的部分, 
+			# 是<pk>,所以template中要明确指定pk=course.pk
+
+now go to "http://127.0.0.1:8000/courses/"
+we can see each of our course and its description is in its own frame, and have a link to the top
+that goes to that course, we can jump around
+
+we can do that in our "detail" template as well
+let's go to "learning_site/courses/templates/courses/course_detail.html"
+in the "step" part, let's add a link to each step
+		<section>
+        {% for step in course.step_set.all %}
+            <h3>
+                <a href="{% url 'step' course_pk=step.course.pk step_pk=step.pk %}">{{ step.title }}</a>
+            </h3>
+            {{ step.description }}
+        {% endfor %}
+    </section>
+
+    # url(r'(?P<course_pk>\d+)/(?P<step_pk>\d+)$', views.step_detail, name='step'    
+    #在"courses/urls.py"中, 有<course_pk>和<step_pk>两个部分, 并且template中"for step in..."
+
+
+
+and we do one more in "step.course.title" in "step_detail.html"
+let's link back to the "course, so you can hop back
+		<article>
+   		<h2><a href="{% url 'detail' pk=step.course.pk %}">{{ step.course.title }}</a></h2>
+    	<h3>{{ step.title }}</h3>
+    	{{ step.content|linebreaks }}
+		</article>
+		
+		#url(r'(?P<pk>\d+)/$', views.course_detail, name='detail'
+
+so let's try this out, go to "Python Basics"
+"http://127.0.0.1:8000/courses/"
+"http://127.0.0.1:8000/courses/1/"
+
+here are our steps: Using the Shell / What's the deal with strings?
+let's click on "Using the Shell", the page goes to "http://127.0.0.1:8000/courses/1/2"
+and we can see the "Content" of "Using the Shell"
+and we can click the "Python Basics" to come back to "http://127.0.0.1:8000/courses/1/"
+		
+one last thing we wanna do is what to name "space" url that where we don't get those conflicts that we brought up
+surely ??? views that called "list", and we don't want to deal with that, 
+so back to our "side-wide" urls.py "learning_site/learning_site/urls.py"
+where we can this "include('courses.urls')", we're gonna add one more argument to this
+
+		path('courses/', include('courses.urls', namespace="courses"))
+		
+		# all of our urls live inside this "courses namespace"
+		# we need to readjust our url tag one last time in our "layout.html"
+		
+in the "learning_site/templates/layout.html"
+		#视频中是 <nav>
+    					<a href="{% url 'view.hello_world' %}">Home</a>
+    					<a href="{% url 'courses.views.course_list' %}">Courses</a>
+      				</nav>
+    # 但是是会出错的 我自己改了 <nav>
+    														<a href="{% url 'hello_world' %}">Home</a>
+    														<a href="{% url 'list' %}">Courses</a>
+      												</nav>
+    
+    <nav>
+			<a href="{% url 'hello_world' %}">Home</a>
+			<a href="{% url 'courses:list' %}">Courses</a>
+		</nav>
+
+then "learning_site/learning_site/urls.py", add "namespace='courses'" 
+#注意还要添加一个参数'courses'到include(),不然会出错，因为需要两个参数才可以
+然后到所有 "learning_site/courses/templates/courses"中的html模板中,在所以的"name"部分前面添加"courses:"
+变成 "{% url 'courses:step...'}"
+		"{% url 'courses:detail...'}"
+		
+然后再回去网页中刷新, 可以去到主页, "Courses"页, 可以点击每个课程,以及它们的steps,并且可以返回
+
+if you're thinking "oh i'll never use these namespaces", i just like to remind you the zen of python
+and its final line "namespaces are one honking good idea, let's do more of those "
+one final bit to cover and we'll have a really solid app we  can submit as a prototype to a client or a boss

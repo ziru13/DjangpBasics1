@@ -20,18 +20,18 @@ so inside "courses/models.py" we're gonna add a new model
     	
     	# the 1st two items should be pretty familiar from the "Course" model, exactly the same
     	# the last two items are new
-    	# "order" lets us control the order of the steps, a??? we forget to create a step and we have to create it later
-    	# this way we can add a new one and then set??? where it should be in the order
+    	# "order" lets us control the order of the steps, maybe we forget to create a step and we have to create it later
+    	# this way we can add a new one and then set where it should be in the order
     	# setting it to 0 so we can set other numbers to control the ordering of steps later
     	# 0 is a safe default that will order automatically by their id and then we'll handle their ordering later
     	# the "course" attribute is a ForeignKey, which is a record??? that points to, or a column that points to
-    		a record in another table, can be in the same table but for now??? in some other table
+    		a record in another table, can be in the same table but for now it's in some other table
     		so what we're doing is "Hey,here is this step and maybe it's a step id of 3 and then belongs to course with an
     		id of one,so it belongs to that course over there and points to that course", this way a single course can have 
-    		multiple steps but each step only has ons course, it's known as the "one to many" relationship or real hanging???
-    		from the step side and "many to one", many steps belong to one course
+    		multiple steps but each step only has one course, it's known as the "one to many" relationship or if you're
+    		looking at it from the step side and "many to one", many steps belong to one course
     # and the "__str__" method which will print out the tittle of the step
-    # but I'll??? print out the order but I'll let you put that field if you want
+    # but I'm not gonna print out the order but I'll let you put that field if you want
 
 now we've made our model, we of course have to create a new migration, you will do this a lot
 you'll make a model then you'll make a migration, then you'll apply the migration
@@ -54,14 +54,14 @@ then let's add a step by clicking the "Add" button on the right
 		Order: 0
 		Course: Python Basics (you can choose)
 		
-		# then let's "save" that, it shows up a flash 'the step "What's the deal with strings" was addded successful.'
+		# then let's "save" that, it shows up a flash 'the step "What's the deal with strings" was added successful.'
 		
 add one course is ok, but if we have a lot of courses, this might get a little difficult, that drop down takes
 it can take a while to read through, to find stuffs, probably better way and you know I wouldn't ask that unless it's true
 Django lets us create smaller forms that represent another model inside the admin form for a model, 
 so we can edit and create steps for courses while we're editing or creating a particular course
 we need to create two new classes for this to work though, so let's hove back over to our "editor"
-we have to??? do all of them right here inside the "admin.py",
+we have to get to do all of them right here inside the "admin.py",
 so now first we need to make a class for our smaller form, that's known as an in-line
 		class StepInline(admin.StackedInline):
 			model = Step
@@ -77,7 +77,7 @@ now, we have to make our "Next thing"
 		admin.site.register(Course, CourseAdmin)
 		admin.site.register(Step)
 		
-		# this is the admin for handling our courses, this supposed to specify custom special things
+		# this is the admin for handling our courses, this ??? specify custom special things
 		# when we make the "StepInline" we set the "model = Step", we didn't set a model on "CourseAdmin"
 		# we do that in the "admin.site.register(Course, CourseAdmin)"
 		# we register "Course", and we register with "CourseAdmin"

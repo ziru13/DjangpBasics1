@@ -1,7 +1,7 @@
-we ??? to do functionality that we haven't addressed yet with our order filled, 
+we've introduced some functionality that we haven't addressed yet with our order field, 
 and we have that 404s just waiting to happen
 let's open up "courses/models.py" and we have this "order" field default of "0" in class "Step"
-by default Django orders record by their id, but ??? is automatically generated and implemented
+by default Django orders record by their id, which is automatically generated and incremented
 the first record created gets a "1" then "2" and so on, it's awesome until you need to reorder sth, 
 like as sometimes happens when I'm writing a course or entering into our CMS here at treehouse
 whay if we??? forget to put in "Step 3" and put in "Step 4" first???, now it come out out of order
@@ -13,7 +13,7 @@ first, we're gonna add a new section to our model "Step" in "courses/models.py"
 				ordering = ['order', ]  # order them by order
 				
 
-			# Django model has a optional piece??? to them , known as class Meta, 
+			# Django model has an optional piece??? to them , known as class Meta, 
 			# if you did either the "peewee" courses, you've seen sth similar to this, 
 			# it's a class inside of our model class that controls how that model does a few things
 			# we're gonna use it to set a default ordering for our instances, 

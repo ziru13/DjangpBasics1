@@ -1,5 +1,5 @@
 one of the Django killer features, 
-one of the thing you show the old school PHP ??? developer to make their Java's??? job
+one of the thing you show the old school PHP and pro ??? developer to make their jaws drop
 is "django admin"
 it's just the fact that you have to do so little work to get something that is so useful
 
@@ -26,7 +26,7 @@ when we first log in we only have two things in the admin "Users" and "Groups"
 these are two "Models" that are provided by django,
 and they are under the "Authentication and Authorization" header
 they belong to Django's "off"??? app
-with django give it a custom name in the admin, 
+with django gave it a custom name in the admin, 
 that's why it says "Authentication and Authorization" instead of just "OFF"???
 		Authentication and Authorization
 			Groups
@@ -34,7 +34,7 @@ that's why it says "Authentication and Authorization" instead of just "OFF"???
 			
 
 let's see what's in the area for "Users", there is the user account we created
-we can search for users, filter them by different statics on the right side
+we can search for users, filter them by different status on the right side
 
 let's click on the "Username", it's a form for changing all of our user's details
 the "change user" page shows--（http://127.0.0.1:8000/admin/auth/user/1/change/）
@@ -65,7 +65,7 @@ let's check that out, that is the each of the course we created in the shell
 		Python Collection
 		Python Basics
 
-let's look on "Python Basics", anf there is a form with "Title" on??? and "Description" field
+let's look on "Python Basics", anf there is a form with "Title" on the "Description" field
 		Change Course
 		Title           Python Basics
 		Description			Learn the basics of Python
@@ -74,7 +74,7 @@ let's look on "Python Basics", anf there is a form with "Title" on??? and "Descr
 		Delete		Save and add another			Save and continue editing		SAVE   (buttons)
 		
 now, where is the "created_at" field, where is the "id" we saw in migration?
-the "id" is automatically set, it's auto???ting, 
+the "id" is automatically set, it's auto implementing, 
 so django is like "ok, you don't need that, I hide that away"
 and kinda same idea with our "created_at" field, we set it to be "auto_now_add" as "True"  (models.py)
 so Django goes "Ok, you not going to be editing that because you're setting it automatically, 

@@ -73,7 +73,7 @@ go to the "learning_site/urls.py" from the project, and add a new line before th
 		   Django turns that string that we give it "courses.urls" this string, into an import path
 		   which let us find the url patterns, 
 		   this means we don't have to import the urls ourselves into every place we want to use them 
-		   this really helps with "plugable" mess and ???lerety that we keep bringing up
+		   this really helps with "pluggable" mess and ???lerety that we keep bringing up
 		   
 再次刷新网页,没有发生任何改变,如果去"http://127.0.0.1:8000/courses/",会得到一个Error
 since we include the 'courses.urls' at "/courses", ???the url we have there is an empty string
