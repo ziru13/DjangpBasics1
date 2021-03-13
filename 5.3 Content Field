@@ -19,8 +19,8 @@ it would be fine if didn't have a existing route in the database but we do we ha
 so Django doesn't know what to do with the routes already in the database,
 our database doesn't know what to let Django do with the route that already in the database
 so basically Django and database??? they knot their hands and go 'hey, tell us what to do'
-so we can provide an existing default for all the ones??? already have been put in, and it only happen now
-it won't happen when we are on another??? database, 
+so we can provide an existing default for all the ones that have already have been put in, and it only happen now
+it won't happen when we run it on another??? database, 
 or we can quit, se can set a default in the model and that will happen no matter what
 I think we should quit and change some models, so let's hit "2"
 	
@@ -38,8 +38,9 @@ so it says "hey you don't have to get a value here, "
 and the "default" if they don't put anything in, it's gonna be an empty string
 	content = models.TextField(blank=True, default='')
 	
-so the worst case scenario??? nobody is providing??? that data scenario is an empty string, 
-which is fine, empty string is a little bit of data, and it can be blank in the form we don't have to have value in the form
+so the worst case scenario,, the "nobody-provided-any-data scenario" is an empty string, 
+which is fine, empty string is a little bit of data, and it can be blank in the form 
+we don't have to have value in the form
 
 ok, let's try making this migration again "py manage.py makemigrations courses"
 		Migrations for 'courses':
@@ -92,7 +93,8 @@ so let's go add some "content" to our step in the admin, which means we need to 
 		...
 		
 that's great, we got paragraphs jus like we wanted, 
-you might want to go back to our other template and put the "linebreaks" filters in the places where we printed out descriptions
+you might want to go back to our other template and 
+put the "linebreaks" filters in the places where we printed out descriptions
 you know sth we've been missing in this entire course, we don't have a single link anywhere, 
 we should use "anchor" tags <a></a>, there's a great part of a html
 	

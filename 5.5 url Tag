@@ -2,7 +2,7 @@ since we control our urls through a python module, sometimes urls change,
 you should try to keep your urls the same once your project has a proper launch
 but while you're developing it, free feel to change them rounds to your heart's desire
 also if you're distributing a reusable app, you can't control the path people give to your urls
-so between custom urls pattern from other developers, and you're changing urls while you develop
+so between custom urls pattern from other developers, and your changing urls while you develop
 how do you know what url to type into your anchor tags? (<a></a>)
 Django handle, it gives us a template tag just for this
 before we can use our url template tag, we should give our urls names
@@ -10,7 +10,7 @@ now we can't use the path to the view file and the view function, just like what
 but this isn't as common of a practise and most of the time Django developers name the urls to make it easier to refer to them
 so let's add a url tag for "non-name" url and then see about adding names to all of our urls
 
-so let's go to our "learning_site\templates\layout.html"
+so let's go to our "learning_site/templates/layout.html"
 we want to have like a header bar, that specify these all of our links stuff
 so let's do <nav></nav>
 			<body>
@@ -43,17 +43,17 @@ we could do a similar thing, let's add another tag below the "hello_world"
 		<div class="site-container">
     	<nav>
     		<a href="{% url 'hello_world' %}">Home</a>
-    		<a href="{% url 'courses.views.course_list' %}">Courses</a>
+    		<a href="{% url 'courses.course_list' %}">Courses</a>
       </nav>
     	{% block content %}{% endblock %}
     </div>
     
     # we get a link to courses which gives us all of our courses
     # 以上是视频中的步骤,会出错
-    # 我自己改成 {% url 'list' %},因为下面的步骤在"learning_site\courses\urls.py"中添加了name的参数
+    # 我自己改成 {% url 'courses.course_list' %},因为下面的步骤在"learning_site\courses\urls.py"中添加了name的参数
     # we got a big red "Courses" button for "Courses"
     
-???great when we have to use "url arguments" though like the "pk", "course_pk" ect, 
+it´s great when we have to use "url arguments" though like the "pk", "course_pk" ect, 
 also what if??? you have a very very long name that the module does, then you have this long "url tag", 
 that might be hard to remember that whole path to it, so it's not great
 and if you're distributing this, you don't want to require the developer's user package 
@@ -71,7 +71,7 @@ we do that by specifying "name=sth", so
 		
 		# just some nice simple names, hopefully now you're thinking those names are gonna conflict??? eventually
 		# you're right, they would, we would have conflict with some other app somewhere
-		# but we're gonna take an extra step to prevent that here a little bit
+		# but we're not gonna take an extra step to prevent that here a little bit
 		# for now we just set the rest of our urls
 		
 so go to "learning_site\courses\templates\courses\course_list.html"
@@ -139,7 +139,7 @@ and we can see the "Content" of "Using the Shell"
 and we can click the "Python Basics" to come back to "http://127.0.0.1:8000/courses/1/"
 		
 one last thing we wanna do is what to name "space" url that where we don't get those conflicts that we brought up
-surely ??? views that called "list", and we don't want to deal with that, 
+surely we're eventually gonna having a view that's called "list", and we don't want to deal with that, 
 so back to our "side-wide" urls.py "learning_site/learning_site/urls.py"
 where we can this "include('courses.urls')", we're gonna add one more argument to this
 
